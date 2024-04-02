@@ -24,9 +24,15 @@ const accountB = {
 const accounts = [accountA, accountB];
 
 function validateCardNumber() {}
+
 function validatePin() {}
-function checkBalance() {}
+
+function checkBalance() {
+  console.log(`Saldo Anda saat ini adalah: ${currentAccount.balance}`)
+}
+
 function deposit() {}
+
 function viewTransactions() {}
 
 function askQuestion(question) {
@@ -38,6 +44,8 @@ function askQuestion(question) {
 }
 
 async function main() {
+  let currentAccount = null;
+  
   do {
     console.log('Menu ATM:');
     console.log('1. Cek Saldo');
