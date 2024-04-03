@@ -49,7 +49,22 @@ function deposit(currentAccount, jumlah) {
   return `Deposit berhasil dilakukan. Saldo: ${currentAccount.balance}`;
 }
 
-function viewTransactions() { }
+function viewTransactions() { 
+  console.log("Riwayat Transaksi");
+
+  if (currentAccount.transactions.length === 0) {
+    console.log("Belum ada transaksi");
+
+  } else {
+    currentAccount.transactions.forEach((transactions, index) => {
+      console.log(
+       `${index + 1}. ${transactions.type}" Rp ${transactions.amount}`
+      );
+      
+    });
+  }
+
+}
 
 function askQuestion(question) {
   return new Promise((resolve) => {
