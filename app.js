@@ -49,7 +49,7 @@ function deposit(currentAccount, jumlah) {
   return `Deposit berhasil dilakukan. Saldo: ${currentAccount.balance}`;
 }
 
-function viewTransactions() { 
+function viewTransactions(currentAccount) { 
   console.log("Riwayat Transaksi");
 
   if (currentAccount.transactions.length === 0) {
@@ -58,7 +58,7 @@ function viewTransactions() {
   } else {
     currentAccount.transactions.forEach((transactions, index) => {
       console.log(
-       `${index + 1}. ${transactions.type}" Rp ${transactions.amount}`
+       `${index + 1}. type : ${transactions.type}, ammount : Rp.${transactions.amount}, Date : ${transactions.date}`
       );
       
     });
@@ -89,8 +89,55 @@ async function main() {
 
     switch (parseInt(choice)) {
       case 1:
-        
+  
+        if (!currentAccount) {
+          const cardNumber = await askQuestion("Masukkan nomor kartu: ");
+          currentAccount = validateCardNumber(cardNumber);
+          console.log("=================");
+          console.log("Selamat datang, ", currentAccount.name);
+          console.log("-----------------");
+          if (!currentAccount) {
+            console.log("nomor kartu tidak ditemukan");
+            console.log("=================");
+          } else {
+            const pin = await askQuestion('Masukkan PIN: ');
+            if (!validatePin(currentAccount.cardNumber, pin)) {
+              console.log('PIN salah.');
+              console.log(pin);
+              currentAccount = undefined;
+            }
+          }
+        }
 
+        if (currentAccount) {
+          console.log("=================");
+          checkBalance(currentAccount);
+        } 
+        break;
+      
+      case 2:
+        if (!currentAccount) {
+          const cardNumber = await askQuestion("Masukkan nomor kartu: ");
+          currentAccount = validateCardNumber(cardNumber);
+          if (!currentAccount) {
+            console.log('Nomor kartu tidak valid.');
+          } else {
+            const pin = await askQuestion('Masukkan PIN: ');
+            if (!validatePin(currentAccount.cardNumber, pin)) {
+              console.log('PIN salah.');
+              currentAccount = undefined;
+            }
+          }
+        }
+
+        if (currentAccount) {
+          console.log("=================");
+          const jumlah = parseFloat(await askQuestion('Masukkan jumlah uang yang ingin Anda setorkan: '));
+          console.log(deposit(currentAccount, jumlah));
+        }
+        break;
+
+      case 3:
         if (!currentAccount) {
           const cardNumber = await askQuestion("Masukkan nomor kartu: ");
           currentAccount = validateCardNumber(cardNumber);
@@ -111,31 +158,12 @@ async function main() {
 
         if (currentAccount) {
           console.log("=================");
-          checkBalance(currentAccount);
+          viewTransactions(currentAccount);
         } 
         break;
-      
-      case 2:
-        if (!currentAccount) {
-          console.log('Silakan masukkan nomor kartu:');
-          const cardNumber = await askQuestion('Nomor Kartu: ');
-          currentAccount = validateCardNumber(cardNumber);
-          if (!currentAccount) {
-            console.log('Nomor kartu tidak valid.');
-          } else {
-            const pin = await askQuestion('Masukkan PIN: ');
-            if (!validatePin(currentAccount, pin)) {
-              console.log('PIN salah.');
-              currentAccount = undefined;
-            }
-          }
-        }
 
-        if (currentAccount) {
-          console.log("=================");
-          const jumlah = parseFloat(await askQuestion('Masukkan jumlah uang yang ingin Anda setorkan: '));
-          console.log(deposit(currentAccount, jumlah));
-        }
+        case 4:
+          currentAccount=undefined;
         break;
         
       default:
