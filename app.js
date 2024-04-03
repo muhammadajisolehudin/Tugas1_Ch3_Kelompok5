@@ -26,7 +26,14 @@ const accounts = [accountA, accountB];
 function validateCardNumber() {}
 function validatePin() {}
 function checkBalance() {}
-function deposit() {}
+
+//muhammad aji solehudin
+function deposit(account, jumlah) {
+  account.balance += jumlah;
+  account.transactions.push({ type: 'deposit', amount: jumlah, date: new Date() });
+  return `Deposit berhasil dilakukan. Saldo: ${account.balance}`;
+}
+
 function viewTransactions() {}
 
 function askQuestion(question) {
@@ -38,6 +45,8 @@ function askQuestion(question) {
 }
 
 async function main() {
+  //penampung akun aktif
+  let active_account;
   do {
     console.log('Menu ATM:');
     console.log('1. Cek Saldo');
@@ -49,6 +58,28 @@ async function main() {
 
     switch (parseInt(choice)) {
       case 1:
+        break;
+      
+      case 2:
+        if (!active_account) {
+          console.log('Silakan masukkan nomor kartu:');
+          const cardNumber = await askQuestion('Nomor Kartu: ');
+          active_account = validateCardNumber(cardNumber);
+          if (!active_account) {
+            console.log('Nomor kartu tidak valid.');
+          } else {
+            const pin = await askQuestion('Masukkan PIN: ');
+            if (!validatePin(active_account, pin)) {
+              console.log('PIN salah.');
+              active_account = undefined;
+            }
+          }
+        }
+
+        if (active_account) {
+          const jumlah = parseFloat(await askQuestion('Masukkan jumlah uang yang ingin Anda setorkan: '));
+          console.log(deposit(active_account, jumlah));
+        }
         break;
     }
   } while (choice !== 4);
