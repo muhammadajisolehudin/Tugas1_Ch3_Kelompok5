@@ -23,10 +23,10 @@ const accountB = {
 
 const accounts = [accountA, accountB];
 
+
 function validateCardNumber(cardNumber) { 
   return accounts.find((account) => account.cardNumber === cardNumber);
 }
-
 
 function validatePin(cardNumber, pin) {
   let account = validateCardNumber(cardNumber)
@@ -38,12 +38,16 @@ function validatePin(cardNumber, pin) {
 }
 
 
-
 function checkBalance(currentAccount) { 
   console.log(`Saldo Anda saat ini adalah: ${currentAccount.balance}`)
 }
 
-function deposit() { }
+
+function deposit(currentAccount, jumlah) {
+  currentAccount.balance += jumlah;
+  currentAccount.transactions.push({ type: 'deposit', amount: jumlah, date: new Date() });
+  return `Deposit berhasil dilakukan. Saldo: ${currentAccount.balance}`;
+}
 
 function viewTransactions() { }
 
@@ -80,6 +84,29 @@ async function main() {
         } else console.log("nomor kartu tidak ditemukan");
         console.log("=================");
         break;
+      
+      case 2:
+        if (!currentAccount) {
+          console.log('Silakan masukkan nomor kartu:');
+          const cardNumber = await askQuestion('Nomor Kartu: ');
+          currentAccount = validateCardNumber(cardNumber);
+          if (!currentAccount) {
+            console.log('Nomor kartu tidak valid.');
+          } else {
+            const pin = await askQuestion('Masukkan PIN: ');
+            if (!validatePin(currentAccount, pin)) {
+              console.log('PIN salah.');
+              currentAccount = undefined;
+            }
+          }
+        }
+
+        if (currentAccount) {
+          const jumlah = parseFloat(await askQuestion('Masukkan jumlah uang yang ingin Anda setorkan: '));
+          console.log(deposit(currentAccount, jumlah));
+        }
+        break;
+        
       default:
         console.log("Pilihan tidak valid");
     }
