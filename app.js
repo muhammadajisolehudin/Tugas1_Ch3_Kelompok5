@@ -27,6 +27,7 @@ function validateCardNumber(cardNumber) {
   return accounts.find((account) => account.cardNumber === cardNumber);
 }
 
+
 function validatePin(cardNumber, pin) {
   account = validateCardNumber(cardNumber)
   if (account) {
@@ -37,8 +38,13 @@ function validatePin(cardNumber, pin) {
 }
 
 
-function checkBalance() { }
+
+function checkBalance() { 
+  console.log(`Saldo Anda saat ini adalah: ${currentAccount.balance}`)
+}
+
 function deposit() { }
+
 function viewTransactions() { }
 
 function askQuestion(question) {
