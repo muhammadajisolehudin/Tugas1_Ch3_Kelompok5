@@ -23,14 +23,23 @@ const accountB = {
 
 const accounts = [accountA, accountB];
 
-function validateCardNumber(cardNumber) {
+function validateCardNumber(cardNumber) { 
   return accounts.find((account) => account.cardNumber === cardNumber);
 }
 
-function validatePin() {}
-function checkBalance() {}
-function deposit() {}
-function viewTransactions() {}
+function validatePin(cardNumber, pin) {
+  account = validateCardNumber(cardNumber)
+  if (account) {
+    return account.pin === pin ? account : false;
+  } else {
+    return false;
+  }
+}
+
+
+function checkBalance() { }
+function deposit() { }
+function viewTransactions() { }
 
 function askQuestion(question) {
   return new Promise((resolve) => {
