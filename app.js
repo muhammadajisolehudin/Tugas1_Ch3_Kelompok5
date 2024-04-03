@@ -89,15 +89,30 @@ async function main() {
 
     switch (parseInt(choice)) {
       case 1:
-        const cardNumber = await askQuestion("Masukkan nomor kartu: ");
-        currentAccount = validateCardNumber(cardNumber);
-        if (currentAccount) {
+        
+
+        if (!currentAccount) {
+          const cardNumber = await askQuestion("Masukkan nomor kartu: ");
+          currentAccount = validateCardNumber(cardNumber);
           console.log("=================");
           console.log("Selamat datang, ", currentAccount.name);
           console.log("-----------------");
+          if (!currentAccount) {
+            console.log("nomor kartu tidak ditemukan");
+            console.log("=================");
+          } else {
+            const pin = await askQuestion('Masukkan PIN: ');
+            if (!validatePin(currentAccount.cardNumber, pin)) {
+              console.log('PIN salah.');
+              currentAccount = undefined;
+            }
+          }
+        }
+
+        if (currentAccount) {
+          console.log("=================");
           checkBalance(currentAccount);
-        } else console.log("nomor kartu tidak ditemukan");
-        console.log("=================");
+        } 
         break;
       
       case 2:
@@ -117,6 +132,7 @@ async function main() {
         }
 
         if (currentAccount) {
+          console.log("=================");
           const jumlah = parseFloat(await askQuestion('Masukkan jumlah uang yang ingin Anda setorkan: '));
           console.log(deposit(currentAccount, jumlah));
         }
