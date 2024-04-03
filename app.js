@@ -29,7 +29,7 @@ function validateCardNumber(cardNumber) {
 
 
 function validatePin(cardNumber, pin) {
-  account = validateCardNumber(cardNumber)
+  let account = validateCardNumber(cardNumber)
   if (account) {
     return account.pin === pin ? account : false;
   } else {
@@ -39,7 +39,7 @@ function validatePin(cardNumber, pin) {
 
 
 
-function checkBalance() { 
+function checkBalance(currentAccount) { 
   console.log(`Saldo Anda saat ini adalah: ${currentAccount.balance}`)
 }
 
@@ -76,7 +76,7 @@ async function main() {
           console.log("=================");
           console.log("Selamat datang, ", currentAccount.name);
           console.log("-----------------");
-          console.log("saldo anda saat ini", +checkBalance(currentAccount));
+          checkBalance(currentAccount);
         } else console.log("nomor kartu tidak ditemukan");
         console.log("=================");
         break;
